@@ -1,0 +1,11 @@
+C:\Users\mtome\source\repos\SAi\SAi\bin\Release\netcoreapp2.1\SAi.deps.json
+C:\Users\mtome\source\repos\SAi\SAi\bin\Release\netcoreapp2.1\SAi.runtimeconfig.json
+C:\Users\mtome\source\repos\SAi\SAi\bin\Release\netcoreapp2.1\SAi.runtimeconfig.dev.json
+C:\Users\mtome\source\repos\SAi\SAi\bin\Release\netcoreapp2.1\SAi.dll
+C:\Users\mtome\source\repos\SAi\SAi\bin\Release\netcoreapp2.1\SAi.pdb
+C:\Users\mtome\source\repos\SAi\SAi\obj\Release\netcoreapp2.1\SAi.csprojAssemblyReference.cache
+C:\Users\mtome\source\repos\SAi\SAi\obj\Release\netcoreapp2.1\SAi.csproj.CoreCompileInputs.cache
+C:\Users\mtome\source\repos\SAi\SAi\obj\Release\netcoreapp2.1\SAi.AssemblyInfoInputs.cache
+C:\Users\mtome\source\repos\SAi\SAi\obj\Release\netcoreapp2.1\SAi.AssemblyInfo.cs
+C:\Users\mtome\source\repos\SAi\SAi\obj\Release\netcoreapp2.1\SAi.dll
+C:\Users\mtome\source\repos\SAi\SAi\obj\Release\netcoreapp2.1\SAi.pdb
