@@ -22,13 +22,13 @@ namespace SAi
                 Directory.CreateDirectory(root);
             }
 
-            Console.WriteLine("What do you want to do? \n 1.Run The AI \n 2.Run the AI from the last record \n\n");
+            Console.WriteLine("What do you want to do? \n 1.Run The AI \n 2.Run the AI from the last record \n");
             while (true)
             {               
                 string input = Console.ReadLine();
                 if (input == "1" || input == "2")
                 {
-                    Console.WriteLine("Do you want to see the snake's game? \n 1.Yes \n 2.No");
+                    Console.WriteLine("Do you want to see the snake's game? \n 1.Yes \n 2.No \n");
                     while (true)
                     {                        
                         string see = Console.ReadLine();
@@ -49,8 +49,8 @@ namespace SAi
                                 int numberOfFiles = Directory.GetFiles(root, "Score_*.txt").Length;
                                 if (numberOfFiles < numOfSnakesInGeneration)
                                 {
-                                    Console.WriteLine("You need to have at least " + numOfSnakesInGeneration + " snakes in your list to run this, Try running the AI more. Press 1 to run the AI.");
-                                    continue;
+                                    Console.WriteLine("You need to have at least " + numOfSnakesInGeneration + " snakes in your list to run this, Try running the AI more. Press 1 to run the AI. \n");
+                                    break;
                                 }
                                 else
                                 {
@@ -61,14 +61,14 @@ namespace SAi
                         }
                         else
                         {
-                            Console.WriteLine("Your answer shoud be only 1 or 2, try again");
+                            Console.WriteLine("Your answer shoud be only 1 or 2, try again \n");
                             continue;
                         }
                     }                                        
                 }
                 else
                 {
-                    Console.WriteLine("Your answer shoud be only 1 or 2, try again");
+                    Console.WriteLine("Your answer shoud be only 1 or 2, try again \n");
                     continue;
                 }
             }                       

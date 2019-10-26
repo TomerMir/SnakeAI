@@ -29,6 +29,7 @@ namespace SAi
                     Game game = new Game(halfNet);
                     _board.ClearAndCreate();
                     game.PlayBest(halfNet.First());
+                    Console.WriteLine(halfNet.First().Score);
                 }
             }  
             

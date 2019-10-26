@@ -153,7 +153,18 @@ namespace SAi
                 }
             }
 
-            string path = Program.root + "Score_" + Score.ToString("D3") + "_SnakeID_" + formattedHash + ".txt"; 
+            string path = Program.root + "Score_" + Score.ToString("D3") + "_SnakeID_" + formattedHash + ".txt";
+
+            string pattern = formattedHash + ".txt";
+            string[] nameOfFiles = Directory.GetFiles(Program.root, "Score_*" + pattern);
+
+            if (nameOfFiles.Length != 0)
+            {
+                foreach (var tmpPath in nameOfFiles)
+                {
+                    File.Delete(tmpPath);
+                }
+            }
             using (StreamWriter sw = new StreamWriter(path, true))
             {
                 foreach (var key in weights.Keys)
