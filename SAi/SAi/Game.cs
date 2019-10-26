@@ -56,7 +56,7 @@ namespace SAi
                     tmpPlace.X = snake.snake.Last.Value.X;
                     tmpPlace.Y = snake.snake.Last.Value.Y;
                     tmpPlace.whatsIn = Place.WhatsInEnum.Snake;
-                    snake.snake.AddFirst(tmpPlace);
+                    snake.snake.AddLast(tmpPlace);
                     snake.score++;
                     snake.hunger += 50;
                     int genNum = food.Generate(tmpFood);
@@ -125,7 +125,7 @@ namespace SAi
                     tmpPlace.X = snake.snake.Last.Value.X;
                     tmpPlace.Y = snake.snake.Last.Value.Y;
                     tmpPlace.whatsIn = Place.WhatsInEnum.Snake;
-                    snake.snake.AddFirst(tmpPlace);
+                    snake.snake.AddLast(tmpPlace);
                     snake.score++;
                     snake.hunger += 50;
                     int genNum = food.Generate(tmpFood);
