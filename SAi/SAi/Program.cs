@@ -28,9 +28,9 @@ namespace SAi
                 string input = Console.ReadLine();
                 if (input == "1" || input == "2")
                 {
+                    Console.WriteLine("Do you want to see the snake's game? \n 1.Yes \n 2.No");
                     while (true)
-                    {
-                        Console.WriteLine("Do you want to see the snake's game? \n 1.Yes \n 2.No");
+                    {                        
                         string see = Console.ReadLine();
 
                         if (see == "1" || see == "2")
@@ -46,7 +46,7 @@ namespace SAi
                             }
                             if (input == "2")
                             {
-                                int numberOfFiles = Directory.GetFiles(root, "SnakeId_*.txt").Length;
+                                int numberOfFiles = Directory.GetFiles(root, "Score_*.txt").Length;
                                 if (numberOfFiles < numOfSnakesInGeneration)
                                 {
                                     Console.WriteLine("You need to have at least " + numOfSnakesInGeneration + " snakes in your list to run this, Try running the AI more. Press 1 to run the AI.");
@@ -102,15 +102,15 @@ namespace SAi
         {
             List<FileName> listOfNames = new List<FileName>();
             List<FileName> listAfterSort = new List<FileName>();
-            Regex fileName = new Regex("SnakeID_(.*)_Score_(.*).txt");
-            string[] nameOfFiles = Directory.GetFiles(root, "SnakeId_*.txt");
+            Regex fileName = new Regex("Score_(.*)_SnakeID_(.*).txt");
+            string[] nameOfFiles = Directory.GetFiles(root, "Score_*.txt");
             foreach (var name in nameOfFiles)
             {
                 if(fileName.IsMatch(name))
                 {
                     FileName tmpName = new FileName();
-                    tmpName.SnakeId = fileName.Match(name).Groups[1].Value;
-                    tmpName.Score = int.Parse(fileName.Match(name).Groups[2].Value);
+                    tmpName.SnakeId = fileName.Match(name).Groups[2].Value;
+                    tmpName.Score = int.Parse(fileName.Match(name).Groups[1].Value);
                     listOfNames.Add(tmpName);
                 }
             }
@@ -118,7 +118,7 @@ namespace SAi
             string path;
             for (int i = 0; i < numOfSnakesInGeneration; i++)
             {
-                path = root + "SnakeID_" + listAfterSort[i].SnakeId + "_Score_" + listAfterSort[i].Score + ".txt";
+                path = root + "Score_" + listAfterSort[i].Score.ToString("D3") + "_SnakeID_" + listAfterSort[i].SnakeId + ".txt";
                 netList[i] = ReadFromFile(path, netList[i]);
             }
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using System.IO;
+using System.Security.Cryptography;
 
 namespace SAi
 {
@@ -12,22 +13,22 @@ namespace SAi
         int[] layers;
         float[][] NeuralNetwork = new float[4][];
         Random random = new Random();
-        public enum _Direction {Right, Left, Forward};
+        public enum _Direction { Right, Left, Forward };
         public Dictionary<string, float> weights = new Dictionary<string, float>();
-         public NeuralNet(int[] _Layers) //מקבל מערך של מספרים שאומר לו כמה נוירונים יהיו בכל שכבה
+        public NeuralNet(int[] _Layers) //מקבל מערך של מספרים שאומר לו כמה נוירונים יהיו בכל שכבה
         {
             layers = _Layers;
             for (int i = 0; i < layers.Length; i++)
             {
-                float[] tmpArr = new float[layers[i]];                 
+                float[] tmpArr = new float[layers[i]];
                 NeuralNetwork[i] = tmpArr;
             }
             buildWeights();
         }
-        
+
         public void feedNet(float[] vlaue)//מזין לרשת נוירונים את השכבה הראשונה של הקלט
         {
-            for(int i = 0; i < NeuralNetwork[0].Length; i++)
+            for (int i = 0; i < NeuralNetwork[0].Length; i++)
             {
                 NeuralNetwork[0][i] = vlaue[i];
             }
@@ -39,21 +40,21 @@ namespace SAi
         }
 
         public void addWeights(int layer)//מוסיף משקל לכל חיבור בין שני נוירונים לפי שכבה שהפונקציה מקבלת
-        {           
-            for(int i = 0; i < NeuralNetwork[layer].Length; i++)
+        {
+            for (int i = 0; i < NeuralNetwork[layer].Length; i++)
             {
                 for (int k = 0; k < NeuralNetwork[layer - 1].Length; k++)
                 {
                     float value = (float)((random.NextDouble() * 20) - 10);
-                    string key = layer.ToString() + "," + i.ToString() +"." + k.ToString();
+                    string key = layer.ToString() + "," + i.ToString() + "." + k.ToString();
                     weights.Add(key, value);
                 }
             }
         }
 
         public void calculateValueForLayer(int layer)//מחשב את הערך לכל נוירון לפי שכבה שהפונקציה מקבלת
-        {            
-            for(int i = 0; i < NeuralNetwork[layer].Length; i++)
+        {
+            for (int i = 0; i < NeuralNetwork[layer].Length; i++)
             {
                 float value = 0;
                 for (int k = 0; k < NeuralNetwork[layer - 1].Length; k++)
@@ -84,9 +85,9 @@ namespace SAi
                 keyList[randomIndex] = tmp;
             }
             List<string> randomKeys = keyList.Take(keyList.Count / 50).ToList();
-           
+
             List<float> randomNums = new List<float>();
-            foreach(string key in randomKeys)
+            foreach (string key in randomKeys)
             {
                 randomNums.Add(weights[key]);
             }
@@ -94,7 +95,7 @@ namespace SAi
             for (int i = 0; i < randomNums.Count; i++)
             {
                 rand = random.Next(0, 3);
-                if(rand == 0)
+                if (rand == 0)
                 {
                     //randomNums[i] = randomNums[i] + (randomNums[i] / (Program.Generation * 3));
                     //randomNums[i] = randomNums[i] + (randomNums[i] / (float)(Math.Pow(2, (0.5 * Program.Generation))));
@@ -110,7 +111,7 @@ namespace SAi
                     randomNums[i] = randomNums[i] + (randomNums[i] / 2);
                     //randomNums[i] = (float)(1.0 / (1.0 + Math.Pow(Math.E, -randomNums[i])));
                 }
-              
+
             }
             int index = 0;
             foreach (string key in randomKeys)
@@ -124,24 +125,38 @@ namespace SAi
             List<string> keyList = new List<string>(weights.Keys);
             NeuralNet LastNet = new NeuralNet(layers);
             float thisValue;
-            float inputValue; 
+            float inputValue;
             foreach (var key in keyList)
             {
                 thisValue = this.weights[key];
                 inputValue = net.weights[key];
                 LastNet.weights[key] = (thisValue + inputValue) / 2;
             }
-            return LastNet;            
+            return LastNet;
         }
 
         public void SaveWeights()
         {
-            int randName = random.Next(0, 999999999);
-            string path = Program.root + "SnakeID_" + randName.ToString() + "_Score_" + Score.ToString() + ".txt";
-            List<string> keyList = new List<string>(weights.Keys);
+            StringBuilder formattedHash;
+            using (SHA1 hasher = SHA1.Create())
+            using (MemoryStream ms = new MemoryStream(weights.Count() * sizeof(float)))
+            {
+                foreach (var key in weights.Keys)
+                {
+                    ms.Write(BitConverter.GetBytes(weights[key]));
+                }
+                byte[] hash = hasher.ComputeHash(ms.ToArray());
+                formattedHash = new StringBuilder(2 * hash.Length);
+                foreach (byte b in hash)
+                {
+                    formattedHash.AppendFormat("{0:X2}", b);
+                }
+            }
+
+            string path = Program.root + "Score_" + Score.ToString("D3") + "_SnakeID_" + formattedHash + ".txt"; 
             using (StreamWriter sw = new StreamWriter(path, true))
             {
-                foreach (var key in keyList)
+                foreach (var key in weights.Keys)
                 {
                     sw.WriteLine(weights[key]);
                 }
@@ -157,17 +172,17 @@ namespace SAi
             int maxIndex = 0;
             float maxValue = 0;
             int k = 0;
-            foreach (float num in NeuralNetwork[NeuralNetwork.Length-1])
+            foreach (float num in NeuralNetwork[NeuralNetwork.Length - 1])
             {
-               if(num > maxValue)
+                if (num > maxValue)
                 {
                     maxIndex = k;
                     maxValue = num;
                 }
                 k++;
             }
-            return (_Direction)maxIndex;            
+            return (_Direction)maxIndex;
         }
-        
+
     }
 }
