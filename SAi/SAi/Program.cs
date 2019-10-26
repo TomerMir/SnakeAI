@@ -13,6 +13,7 @@ namespace SAi
         public static int Generation = 1;
         public static int numOfSnakesInGeneration = 12;
         public const string root = "c:\\Users\\Public\\SnakeAI\\";
+        public static bool seeGame = false;
         static void Main(string[] args)
         {
             BuildNewNetList();
@@ -23,30 +24,47 @@ namespace SAi
 
             Console.WriteLine("What do you want to do? \n 1.Run The AI \n 2.Run the AI from the last record \n\n");
             while (true)
-            {
-                
+            {               
                 string input = Console.ReadLine();
                 if (input == "1" || input == "2")
                 {
-                    if (input == "1")
+                    while (true)
                     {
-                        Console.Clear();
-                        RunAll();
-                    }
-                    if (input == "2")
-                    {
-                        int numberOfFiles = Directory.GetFiles(root, "SnakeId_*.txt").Length;
-                        if(numberOfFiles < numOfSnakesInGeneration)
+                        Console.WriteLine("Do you want to see the snake's game? \n 1.Yes \n 2.No");
+                        string see = Console.ReadLine();
+
+                        if (see == "1" || see == "2")
                         {
-                            Console.WriteLine("You need to have at least "+ numOfSnakesInGeneration + " snakes in your list to run this, Try running the AI more. Press 1 to run the AI.");
-                            continue;
+                            if (see == "1")
+                            {
+                                seeGame = true;
+                            }
+                            if (input == "1")
+                            {
+                                Console.Clear();
+                                RunAll();
+                            }
+                            if (input == "2")
+                            {
+                                int numberOfFiles = Directory.GetFiles(root, "SnakeId_*.txt").Length;
+                                if (numberOfFiles < numOfSnakesInGeneration)
+                                {
+                                    Console.WriteLine("You need to have at least " + numOfSnakesInGeneration + " snakes in your list to run this, Try running the AI more. Press 1 to run the AI.");
+                                    continue;
+                                }
+                                else
+                                {
+                                    AppendToNet();
+                                    RunAll();
+                                }
+                            }
                         }
                         else
                         {
-                            AppendToNet();
-                            RunAll();
+                            Console.WriteLine("Your answer shoud be only 1 or 2, try again");
+                            continue;
                         }
-                    }
+                    }                                        
                 }
                 else
                 {

@@ -24,38 +24,14 @@ namespace SAi
                 BestScore = halfNet.First().Score;
                 Console.WriteLine("Best Score: " + BestScore);
                 halfNet.First().SaveWeights();
-            }
-            if (halfNet.First().Score >= 50)
-            {
-                Console.WriteLine(Program.Generation);
-                Console.ReadKey();
-                Game game = new Game(halfNet);
-                _board.ClearAndCreate();
-                game.PlayBest(halfNet.First());
-
-            }
-
-            /*Game game = new Game(halfNet);
-            _board.ClearAndCreate();
-            game.PlayBest(halfNet.First());*/
-
-
-            //Console.WriteLine("Score: " + halfNet.First().Score + "\n\n\n");
-
-
-            //Console.WriteLine("Weight: " + halfNet[0].weights["1,0.0"]);
-
-            /*foreach (NeuralNet net in halfNet) //reproduce
-            {
-                for (int i = 0; i < 4; i++)
+                if (Program.seeGame)
                 {
-                    tmpNet.weights = net.weights;
-                    tmpNet.ChangeWeight();
-                    finelList.Add(tmpNet);
+                    Game game = new Game(halfNet);
+                    _board.ClearAndCreate();
+                    game.PlayBest(halfNet.First());
                 }
-                finelList.Add(net);                                   
-            }*/
-
+            }  
+            
             for (int i = 0; i < halfNet.Count; i+=2)
             {
                 tmpNet.weights = halfNet[i].CrossWith(halfNet[i + 1]).weights;
