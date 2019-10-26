@@ -10,6 +10,7 @@ namespace SAi
         Board _board = new Board();
         Food food = new Food();
         List<NeuralNet> netList;
+
         public Game(List<NeuralNet> netListInput)
         {
             netList = netListInput;
@@ -139,7 +140,7 @@ namespace SAi
                 }
                 Console.Clear();
                 _board.Print();
-                Thread.Sleep(30);
+                Thread.Sleep(10);
             }          
         }
     }

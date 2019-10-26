@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.IO;
 
 namespace SAi
 {
@@ -9,7 +10,7 @@ namespace SAi
     {
         public int Score = 0;
         int[] layers;
-        float[][] NeuralNetwork = new float[3][];
+        float[][] NeuralNetwork = new float[4][];
         Random random = new Random();
         public enum _Direction {Right, Left, Forward};
         public Dictionary<string, float> weights = new Dictionary<string, float>();
@@ -43,7 +44,7 @@ namespace SAi
             {
                 for (int k = 0; k < NeuralNetwork[layer - 1].Length; k++)
                 {
-                    float value = (float)((random.NextDouble() * 2) - 1);
+                    float value = (float)((random.NextDouble() * 20) - 10);
                     string key = layer.ToString() + "," + i.ToString() +"." + k.ToString();
                     weights.Add(key, value);
                 }
@@ -61,7 +62,7 @@ namespace SAi
                     float weightFromDictionery = weights[key];
                     value += NeuralNetwork[layer - 1][k] * weightFromDictionery;
                 }
-                NeuralNetwork[layer][i] = (float)(1.0 / (1.0 + Math.Pow(Math.E, -value))); ;
+                NeuralNetwork[layer][i] = (float)(1.0 / (1.0 + Math.Pow(Math.E, -value)));
             }
         }
 
@@ -89,22 +90,25 @@ namespace SAi
             {
                 randomNums.Add(weights[key]);
             }
-            for(int i = 0; i < randomNums.Count; i++)
+            int rand;
+            for (int i = 0; i < randomNums.Count; i++)
             {
-                int rand = random.Next(1, 2);
-                if(rand == 1)
+                rand = random.Next(0, 3);
+                if(rand == 0)
                 {
                     //randomNums[i] = randomNums[i] + (randomNums[i] / (Program.Generation * 3));
                     //randomNums[i] = randomNums[i] + (randomNums[i] / (float)(Math.Pow(2, (0.5 * Program.Generation))));
                     //randomNums[i] = randomNums[i] + (randomNums[i] / (float)(1.5 * Program.Generation));
-                    randomNums[i] = randomNums[i] + (randomNums[i] / 3);
+                    randomNums[i] = randomNums[i] - (randomNums[i] / 2);
+                    //randomNums[i] = (float)(1.0 / (1.0 + Math.Pow(Math.E, -randomNums[i])));
                 }
                 else
                 {
                     //randomNums[i] = randomNums[i] - (randomNums[i] / (Program.Generation * 3));
                     //randomNums[i] = randomNums[i] - (randomNums[i] / (float)(Math.Pow(2, (0.5 * Program.Generation))));
                     //randomNums[i] = randomNums[i] - (randomNums[i] / (float)(1.5 * Program.Generation));
-                    randomNums[i] = randomNums[i] - (randomNums[i] / 3);
+                    randomNums[i] = randomNums[i] + (randomNums[i] / 2);
+                    //randomNums[i] = (float)(1.0 / (1.0 + Math.Pow(Math.E, -randomNums[i])));
                 }
               
             }
@@ -113,6 +117,34 @@ namespace SAi
             {
                 weights[key] = randomNums[index];
                 index++;
+            }
+        }
+        public NeuralNet CrossWith(NeuralNet net)
+        {
+            List<string> keyList = new List<string>(weights.Keys);
+            NeuralNet LastNet = new NeuralNet(layers);
+            float thisValue;
+            float inputValue; 
+            foreach (var key in keyList)
+            {
+                thisValue = this.weights[key];
+                inputValue = net.weights[key];
+                LastNet.weights[key] = (thisValue + inputValue) / 2;
+            }
+            return LastNet;            
+        }
+
+        public void SaveWeights()
+        {
+            int randName = random.Next(0, 999999999);
+            string path = Program.root + "SnakeID_" + randName.ToString() + "_Score_" + Score.ToString() + ".txt";
+            List<string> keyList = new List<string>(weights.Keys);
+            using (StreamWriter sw = new StreamWriter(path, true))
+            {
+                foreach (var key in keyList)
+                {
+                    sw.WriteLine(weights[key]);
+                }
             }
         }
         public _Direction GetDirection(float[] input)//בוחר לאיזה כיוון צריך הנחש לפנות
