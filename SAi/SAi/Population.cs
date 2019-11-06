@@ -14,8 +14,7 @@ namespace SAi
         {
             List<NeuralNet> halfNet = new List<NeuralNet>();         
             List<NeuralNet> finelList = new List<NeuralNet>();
-            int[] tmp = new int[4] { 6,8,8,3};
-            NeuralNet tmpNet = new NeuralNet(tmp);           
+            NeuralNet tmpNet = new NeuralNet(Program.layers);           
 
             halfNet = netList.OrderByDescending(x => x.Score).Take(netList.Count / 3).ToList(); //sort 
 
@@ -42,7 +41,7 @@ namespace SAi
             }
             for (int i = 0; i < (netList.Count/2); i++)
             {
-                NeuralNet anotherNet = new NeuralNet(tmp);
+                NeuralNet anotherNet = new NeuralNet(Program.layers);
                 finelList.Add(anotherNet);
             }
             return finelList;

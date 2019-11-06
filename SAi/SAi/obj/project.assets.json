@@ -694,11 +694,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\mtome\\source\\repos\\SAi\\SAi\\SAi.csproj",
+      "projectUniqueName": "C:\\Users\\mtome\\Desktop\\SnakeAI\\SAi\\SAi\\SAi.csproj",
       "projectName": "SAi",
-      "projectPath": "C:\\Users\\mtome\\source\\repos\\SAi\\SAi\\SAi.csproj",
+      "projectPath": "C:\\Users\\mtome\\Desktop\\SnakeAI\\SAi\\SAi\\SAi.csproj",
       "packagesPath": "C:\\Users\\mtome\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\mtome\\source\\repos\\SAi\\SAi\\obj\\",
+      "outputPath": "C:\\Users\\mtome\\Desktop\\SnakeAI\\SAi\\SAi\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

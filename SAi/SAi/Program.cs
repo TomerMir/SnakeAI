@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace SAi
 {
@@ -14,6 +15,7 @@ namespace SAi
         public static int numOfSnakesInGeneration = 12;
         public const string root = "c:\\Users\\Public\\SnakeAI\\";
         public static bool seeGame = false;
+        public static int[] layers = new int[4] { 6, 8, 8, 3 };
         static void Main(string[] args)
         {
             BuildNewNetList();
@@ -22,12 +24,52 @@ namespace SAi
                 Directory.CreateDirectory(root);
             }
 
-            Console.WriteLine("What do you want to do? \n 1.Run The AI \n 2.Run the AI from the last record \n");
+            
             while (true)
-            {               
+            {
+                Console.WriteLine("What do you want to do? \n 1.Run The AI \n 2.Run the AI from the last record \n 3.Run a game with a specific snake from SnakeAI directory \n");
                 string input = Console.ReadLine();
-                if (input == "1" || input == "2")
+                if (input == "1" || input == "2" || input == "3")
                 {
+                    bool is3 = true;
+                    if(input == "3")
+                    {
+                        string[] nameOfFiles = Directory.GetFiles(root, "Score_*.txt");
+                        Console.Clear();
+                        while(true)
+                        {
+                            Console.WriteLine("Which snake do you want to play with? (Enter the number of the snake on the SnakeAI directory)");
+                            string place = Console.ReadLine();
+                            if(place.All(char.IsDigit) && place != "")
+                            {
+                                if (int.Parse(place) > 0 && int.Parse(place) < nameOfFiles.Length)
+                                {
+                                    Console.WriteLine("So you are playing with " + nameOfFiles[nameOfFiles.Length - int.Parse(place)]);
+                                    Thread.Sleep(1000);
+                                    Game game = new Game(netList);                                    
+                                    game.PlayBest2(ReadFromFile(nameOfFiles[nameOfFiles.Length - int.Parse(place)]));
+                                    Thread.Sleep(5000);
+                                    is3 = false;
+                                    break;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Your number should be in the range of the files count");
+                                    continue;
+                                }                                    
+                            }
+                            else
+                            {
+                                Console.WriteLine("Your input should be a number");
+                            }
+                        }                       
+                    }
+                    if (is3 == false)
+                    {
+                        is3 = true;
+                        Console.Clear();
+                        continue;
+                    }
                     Console.WriteLine("Do you want to see the snake's game? \n 1.Yes \n 2.No \n");
                     while (true)
                     {                        
@@ -85,9 +127,23 @@ namespace SAi
                 Generation++;
             }
         }
+       
         public static NeuralNet ReadFromFile(string path, NeuralNet net)
         {
             string[] allWeightss = File.ReadAllLines(path);
+            List<string> keyList = new List<string>(net.weights.Keys);
+            int i = 0;
+            foreach (var key in keyList)
+            {
+                net.weights[key] = float.Parse(allWeightss[i]);
+                i++;
+            }
+            return net;
+        }
+        public static NeuralNet ReadFromFile(string path)
+        {
+            string[] allWeightss = File.ReadAllLines(path);
+            NeuralNet net = new NeuralNet(layers);
             List<string> keyList = new List<string>(net.weights.Keys);
             int i = 0;
             foreach (var key in keyList)
@@ -125,7 +181,7 @@ namespace SAi
 
         public static void BuildNewNetList()
         {
-            int[] layers = new int[4] { 6,8,8,3 };
+
             for (int i = 0; i < numOfSnakesInGeneration; i++)
             {
                 NeuralNet net = new NeuralNet(layers);
