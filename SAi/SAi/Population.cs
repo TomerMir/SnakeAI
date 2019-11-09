@@ -17,7 +17,6 @@ namespace SAi
             NeuralNet tmpNet = new NeuralNet(Program.layers);           
 
             halfNet = netList.OrderByDescending(x => x.Score).Take(netList.Count / 3).ToList(); //sort 
-
             if (halfNet.First().Score > BestScore)
             {
                 BestScore = halfNet.First().Score;
