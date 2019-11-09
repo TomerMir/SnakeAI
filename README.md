@@ -11,7 +11,7 @@ The snake can see in 3 directions (Forward, Left and Right). In each of these di
 3 x 2 = 24 inputs. The 4 outputs are simply the directions the snake can move.
 ## Evolution
 ### Natural Selection
-Each generation a population of 2000 snakes is created. For the first generation, all of the neural nets in each of the snakes
+Each generation a population of 12 snakes is created. For the first generation, all of the neural nets in each of the snakes
 are initialized randomly. Once the entire population is dead, a fitness score is calculated for each of the snakes. Using these
 fitness scores, some of the best snakes are selected to reproduce.In reproduction two snakes are selected and the neural
 nets of each are crossed and then the resulting child is mutated.
